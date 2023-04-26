@@ -1,0 +1,79 @@
+﻿@model BookViewModel
+<h1 class="display-6 mt-2 text-danger">Kitap Siliniyor!</h1>
+<hr />
+
+<form asp-area="Admin"
+      asp-controller="Books"
+      asp-action="Delete"
+      method="post">
+    <div class="row">
+        <div class="col-9">
+            <div class="row">
+                <div class="col">
+                    <div class="mb-3">
+                        <label class="form-label text-danger fw-bold">Kitap Adı:</label>
+                        <label>@Model.Name</label>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-danger fw-bold">Stok Miktarı:</label>
+                        <label>@Model.Stock</label>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-danger fw-bold">Fiyat:</label>
+                        <label>@Model.Price</label>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-danger fw-bold">Sayfa Sayısı:</label>
+                        <label>@Model.PageCount</label>
+                    </div>
+
+                </div>
+                <div class="col">
+                    <div class="mb-3">
+                        <label class="form-label text-danger fw-bold">Basım Yılı:</label>
+                        <label>@Model.EditionYear</label>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-danger fw-bold">Baskı No:</label>
+                        <label>@Model.EditionNumber</label>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-danger fw-bold">Onay Durumu:</label>
+                        <label>@(Model.IsApproved ? "Onaylı" : "Onaylı değil")</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                @foreach (var image in Model.Images)
+                {
+                    <div class="col-2">
+                        <img src="~/images/books/@image.Url" class="img-thumbnail" width="100" alt="...">
+                    </div>
+                }
+            </div>
+            <button type="submit" class="btn btn-danger">Sil</button>
+
+        </div>
+        <div class="col-3">
+            <h5 class="text-danger">Kategoriler</h5>
+            <ul>
+            @foreach (var category in Model.Categories)
+            {
+                <li>@category.Name</li>
+            }
+            </ul>
+            <h5 class="text-danger">Yazarlar</h5>
+            <ul>
+                @foreach (var author in Model.Authors)
+                {
+                    <li>@author.Name</li>
+                }
+            </ul>
+        </div>
+    </div>
+
+</form>
+@section Scripts{
+    @await Html.PartialAsync("_ValidationScriptsPartial");
+}
+

@@ -1,0 +1,126 @@
+﻿@model BookModel
+
+<div class="card">
+    <div>
+        @{
+            BookImagesCarousel bookImagesCarousel = new BookImagesCarousel
+            {
+                Book = Model,
+                IsDetail = false
+            };
+        }
+        @await Html.PartialAsync("_BookImagesSliderPartial", bookImagesCarousel)
+    </div>
+    <div class="card-body text-center">
+        <h6 class="card-title mb-0 fs-5 text-danger d-flex align-items-center justify-content-center" style="height:40px;">
+            <a class="btn btn-link text-decoration-none p-0 border-0 text-danger fs-5" data-bs-toggle="modal" data-bs-target="#book-detail-@Model.Id">
+                @Model.Name
+            </a>
+        </h6>
+
+        @if (Model.Authors.Count > 1)
+        {
+            <!-- Button trigger modal -->
+            <a class="btn btn-link text-decoration-none p-0 border-0" data-bs-toggle="modal" data-bs-target="#book-detail-@Model.Id">
+                Komisyon
+            </a>
+        }
+        else
+        {
+            <ul class="list-unstyled">
+
+                @for (int i = 0; i < Model.Authors.Count; i++)
+                {
+                    <li class="card-text">@Model.Authors[i].Name</li>
+                }
+            </ul>
+        }
+
+        <!-- Modal -->
+        <div class="modal fade" id="book-detail-@Model.Id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">@Model.Name</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-6">
+                                @{
+                                    bookImagesCarousel.IsDetail = true;
+                                }
+
+                                @await Html.PartialAsync("_BookImagesSliderPartial", bookImagesCarousel)
+                            </div>
+                            <div class="col-6 text-start d-flex flex-column justify-content-between">
+                                <div>
+                                    <ul class="list-unstyled">
+                                        @for (int i = 0; i < Model.Authors.Count; i++)
+                                        {
+                                            <li class="card-text">@Model.Authors[i].Name</li>
+                                        }
+                                    </ul>
+                                    <div class="text-danger">
+                                        Fiyat: <span class="text-dark">@($"{Model.Price:C0}")</span>
+                                    </div>
+                                    <div class="text-danger">
+                                        Stok: <span class="text-dark">Var(@Model.Stock)</span>
+                                    </div>
+                                    <div class="text-danger">
+                                        Sayfa Sayısı: <span class="text-dark">@Model.PageCount</span>
+                                    </div>
+                                    <div class="text-danger">
+                                        Basım Yılı: <span class="text-dark">@Model.EditionYear</span>
+                                    </div>
+                                    <div class="text-danger">
+                                        Baskı No: <span class="text-dark">@Model.EditionNumber</span>
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer justify-content-center">
+                                    <form 
+                                        asp-area=""
+                                        asp-controller="Cart"
+                                        asp-action="AddToCart"
+                                        method="post"
+                                    >
+                                        <input type="hidden" asp-for="Id" />
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                                        <input type="number" class="form-control d-inline w-25 ps-1 pe-1" name="Quantity" value="1" min="1" />
+                                        <button type="submit" class="btn btn-outline-primary"><i class="bi bi-cart-plus"></i></button>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <hr />
+        @for (int i = 0; i < Model.Categories.Count; i++)
+        {
+            <span class="card-text text-danger fs-6">@Model.Categories[i].Name <span class="text-dark"> @(i == Model.Categories.Count - 1 ? "" : "|")</span></span>
+        }
+        <p class="card-text">@Model.EditionYear / @(Model.EditionNumber).Baskı</p>
+        <p class="text-success">@($"{Model.Price:C0}")</p>
+        <a class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#book-detail-@Model.Id">Detay</a>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <form asp-area=""
+              asp-controller="Cart"
+              asp-action="AddToCart"
+              method="post"
+              class="d-inline">
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" name="Quantity" value="1" />
+                <button type="submit" class="btn btn-success btn-sm">Sepete Ekle</button>
+
+            </form>
+        }
+
+    </div>
+</div>

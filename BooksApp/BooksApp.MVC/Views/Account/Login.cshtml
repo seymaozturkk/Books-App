@@ -1,0 +1,25 @@
+﻿@model LoginViewModel
+<h1 class="display-6">Giriş Yap</h1>
+<hr />
+
+<form asp-area="" asp-controller="Account" asp-action="Login" method="post">
+    <input type="hidden" asp-for="ReturnUrl" />
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="row w-25">
+        <div class="col-12 mb-3">
+            <label class="form-label" asp-for="UserName"></label>
+            <input class="form-control" asp-for="UserName">
+            <span class="text-danger" asp-validation-for="UserName"></span>
+        </div>
+        <div class="col-12 mb-3">
+            <label class="form-label" asp-for="Password"></label>
+            <input class="form-control" asp-for="Password">
+            <span class="text-danger" asp-validation-for="Password"></span>
+        </div>
+    </div>
+
+
+
+    <button type="submit" class="btn btn-primary">Giriş Yap</button>
+    <a asp-area="" asp-controller="Account" asp-action="ForgotPassword" class="btn btn-link">Şifremi Unuttum</a>
+</form>

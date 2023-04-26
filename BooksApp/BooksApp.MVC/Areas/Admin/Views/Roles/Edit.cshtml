@@ -1,0 +1,70 @@
+﻿@model RoleUpdateViewModel
+<h1 class="display-6">@Model.Role.Name rolü güncelleniyor...</h1>
+<hr />
+<form 
+    asp-area="Admin"
+    asp-controller="Roles"
+    asp-action="Edit"
+    method="post"
+>
+    <input type="hidden" asp-for="Role.Id" />
+    <input type="hidden" asp-for="Role.Name" />
+
+    <div class="row">
+        @*NonMembers*@
+        <div class="col-6">
+            <h6 class="bg-success text-white p-3"><span class="text-warning">@Model.Role.Name</span> Olmayan Üyeler</h6>
+            @if (Model.NonMembers.Count==0)
+            {
+                <div class="alert alert-warning">
+                    Tüm üyeler zaten @Model.Role.Name rolündeler!</div>
+            }
+            else
+            {
+                <table class="table table-sm table-bordered">
+                    @foreach (var user in Model.NonMembers)
+                    {
+                        <tr>
+                            <td>
+                                <input type="checkbox" class="form-check-input" name="IdsToAdd" value="@user.Id" /> 
+                                <label class="form-check-label">
+                                    @user.UserName <span class="text-primary">(@user.FirstName @user.LastName)</span>
+                                </label>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            }
+        </div>
+        @*Members*@
+        <div class="col-6">
+            <h6 class="bg-success text-white p-3"><span class="text-warning">@Model.Role.Name</span> Olan Üyeler</h6>
+            @if (Model.Members.Count == 0)
+            {
+                <div class="alert alert-warning">
+                    @Model.Role.Name rolünde hiç üye yok!
+                </div>
+            }
+            else
+            {
+                <table class="table table-sm table-bordered">
+                    @foreach (var user in Model.Members)
+                    {
+                        <tr>
+                            <td>
+                                <input type="checkbox" class="form-check-input" name="IdsToRemove" value="@user.Id" />
+                                <label class="form-check-label">
+                                    @user.UserName <span class="text-primary">(@user.FirstName @user.LastName)</span>
+                                </label>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            }
+        </div>
+    </div>
+    <div class="d-grid">
+        <button type="submit" class="btn btn-primary">Değişiklikleri Kaydet</button>
+    </div>
+    
+</form>

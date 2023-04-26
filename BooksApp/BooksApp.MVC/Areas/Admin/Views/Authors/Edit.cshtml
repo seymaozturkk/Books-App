@@ -1,0 +1,55 @@
+﻿@model AuthorUpdateViewModel
+<h1 class="display-6 mt-2">Yazar Güncelleme</h1>
+<hr />
+
+<form asp-area="Admin"
+      asp-controller="Authors"
+      asp-action="Edit"
+      method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="mb-3">
+        <label class="form-label" asp-for="Name"></label>
+        <input type="text" class="form-control" asp-for="Name">
+        <span class="text-danger" asp-validation-for="Name"></span>
+    </div>
+    <div class="mb-3">
+        <div class="form-check">
+            <input class="form-check-input" type="radio" asp-for="Gender" value="K" checked>
+            <label class="form-check-label" for="female">
+                Kadın
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" asp-for="Gender" value="E">
+            <label class="form-check-label" for="male" value="E">
+                Erkek
+            </label>
+        </div>
+        <span class="text-danger" asp-validation-for="Gender"></span>
+    </div>
+    <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" asp-for="IsApproved">
+        <label class="form-check-label" asp-for="IsApproved"></label>
+    </div>
+    <div class="mb-3">
+        <label class="form-label" asp-for="About"></label>
+        <textarea class="form-control" asp-for="About" id="editor"></textarea>
+        <span class="text-danger" asp-validation-for="About"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+</form>
+
+@section Styles{
+    <script src="//cdn.ckeditor.com/4.21.0/full/ckeditor.js"></script>
+}
+@section Scripts{
+    <script>
+        CKEDITOR.replace('editor', {
+            toolbar: [
+                { name: 'colors', items: ['TextColor', 'BGColor'] },
+                { name: 'styles', items: ['Format', 'Font', 'FontSize'] },
+                { name: 'paraghraph', items: ['NumberedList', 'BulletedList'] }
+            ]
+        });
+    </script>
+}

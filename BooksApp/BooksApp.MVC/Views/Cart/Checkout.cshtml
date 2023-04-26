@@ -1,0 +1,92 @@
+﻿@model OrderViewModel
+<h6 class="display-6">Ödeme Sayfası</h6>
+<hr />
+<form asp-area="" asp-controller="Cart" asp-action="Checkout" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="row">
+        <div class="col-md-8 col-12">
+            <h6 class="display-6 text-danger fw-normal">Müşteri Bilgileri</h6>
+            <div class="row mb-3">
+                <div class="col-md-6 col-12">
+                    <label class="form-label" asp-for="FirstName"></label>
+                    <input class="form-control" asp-for="FirstName" />
+                </div>
+                <div class="col-md-6 col-12">
+                    <label class="form-label" asp-for="LastName"></label>
+                    <input class="form-control" asp-for="LastName" />
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-12">
+                    <label class="form-label" asp-for="Address"></label>
+                    <textarea class="form-control" asp-for="Address"></textarea>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-4 col-12">
+                    <label class="form-label" asp-for="City"></label>
+                    <input class="form-control" asp-for="City" />
+                </div>
+                <div class="col-md-4 col-12">
+                    <label class="form-label" asp-for="Phone"></label>
+                    <input class="form-control" asp-for="Phone" />
+                </div>
+                <div class="col-md-4 col-12">
+                    <label class="form-label" asp-for="Email"></label>
+                    <input class="form-control" asp-for="Email" />
+                </div>
+            </div>
+            <hr />
+            <h6 class="display-6 text-danger fw-normal">Kart Bilgileri</h6>
+            <div class="row mb-3">
+                <div class="col-6">
+                    <label class="form-label" asp-for="CardName"></label>
+                    <input class="form-control" asp-for="CardName" />
+                </div>
+                <div class="col-6">
+                    <label class="form-label" asp-for="CardNumber"></label>
+                    <input class="form-control" asp-for="CardNumber" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <label class="form-label" asp-for="ExpirationMonth"></label>
+                    <input class="form-control" asp-for="ExpirationMonth" />
+                </div>
+                <div class="col-4">
+                    <label class="form-label" asp-for="ExpirationYear"></label>
+                    <input class="form-control" asp-for="ExpirationYear" />
+                </div>
+                <div class="col-4">
+                    <label class="form-label" asp-for="Cvc"></label>
+                    <input class="form-control" asp-for="Cvc" />
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-12">
+            <h6 class="display-6 text-danger fw-normal">Satış Bilgileri</h6>
+            <ul class="list-group">
+                @foreach (var cartItem in Model.Cart.CartItems)
+                {
+                    <li class="list-group-item">
+                        <div><h6>@cartItem.BookName</h6></div>
+                        <span class="text-danger">Adet:</span><span class="me-2"> @cartItem.Quantity</span>
+                        <span class="text-danger">Fiyat:</span><span class="me-2">@($"{cartItem.ItemPrice:C2}")</span>
+                        @{
+                            decimal? total = cartItem.ItemPrice * cartItem.Quantity;
+                        }
+                        <span class="text-danger">Toplam:</span><span class="me-2">@($"{total:C2}")</span>
+                    </li>
+                }
+                <li class="list-group-item">
+                    <span class="text-primary fw-bold">Ödenecek Tutar:</span><span class="me-2">
+                        @($"{Model.Cart.TotalPrice():C2}")
+                    </span>
+                </li>
+            </ul>
+            <div class="text-end mt-3">
+                <button type="submit" class="btn btn-success">Ödemeyi Yap</button>
+            </div>
+        </div>
+    </div>
+</form>

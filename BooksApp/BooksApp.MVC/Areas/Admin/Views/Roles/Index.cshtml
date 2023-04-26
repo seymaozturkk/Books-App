@@ -1,0 +1,66 @@
+﻿@model List<RoleViewModel>
+@{
+    List<RoleViewModel> roles = Model;
+}
+
+<div class="container-fluid mt-3">
+    <div class="d-flex justify-content-between align-items-center">
+        <h1 class="display-6">Rol Listesi</h1>
+        <div class="d-flex flex-row align-items-end gap-5">
+            <div>
+                <a class="btn btn-success"
+                   asp-area="Admin"
+                   asp-controller="Roles"
+                   asp-action="Create">Rol Ekle</a>
+            </div>
+        </div>
+    </div>
+    <hr />
+    @if (roles.Count == 0)
+    {
+        <div class="alert alert-warning">
+            Herhangi bir rol bilgisi bulunamamıştır!
+        </div>
+    }
+    else
+    {
+        <table id="myDataTable" class="table table-bordered table-sm">
+            <thead class="text-bg-success">
+                <tr>
+                    <th>Ad</th>
+                    <th>Açıklama</th>
+                    <th width="240">İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var role in roles)
+                {
+                    <tr>
+                        <td class="align-middle">@role.Name</td>
+                        <td class="align-middle">@role.Description</td>
+                        <td class="align-middle">
+                            <a class="btn btn-warning btn-sm"
+                       asp-area="Admin"
+                       asp-controller="Roles"
+                       asp-action="Edit"
+                       asp-route-id=@role.Id>Düzenle</a>
+                            <a class="btn btn-outline-danger btn-sm"
+                       asp-area="Admin"
+                       asp-controller="Roles"
+                       asp-action="Delete"
+                       asp-route-id=@role.Id>Sil</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    }
+ </div>
+
+@section Styles{
+    @await Html.PartialAsync("_DataTablesStylesPartialView")
+}
+@section Scripts{
+    @await Html.PartialAsync("_DataTablesScriptsPartialView")
+}

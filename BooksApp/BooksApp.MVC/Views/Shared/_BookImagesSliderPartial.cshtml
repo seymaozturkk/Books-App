@@ -1,0 +1,28 @@
+﻿@*<img src="~/images/books/@Model[0].Url" class="card-img-top b-image" alt="...">*@
+@using BooksApp.Entity.Concrete
+@model BookImagesCarousel
+@{
+    List<Image> images = Model.Book.Images;
+}
+<div id="carousel_@Model.IsDetail-@Model.Book.Id" class="carousel slide">
+    <div class="carousel-inner">
+        @for (int i = 0; i < images.Count; i++)
+        {
+            <div class="carousel-item @(i==0 ? "active" : "")">
+                <img src="~/images/books/@images[i].Url" class="d-block w-100 b-image rounded-top" alt="...">
+            </div>
+        }
+
+    </div>
+    @if (images.Count > 1)
+    {
+        <button class="carousel-control-prev" type="button" data-bs-target="#carousel_@Model.IsDetail-@Model.Book.Id" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carousel_@Model.IsDetail-@Model.Book.Id" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    }
+</div>

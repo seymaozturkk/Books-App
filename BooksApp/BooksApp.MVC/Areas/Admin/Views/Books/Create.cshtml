@@ -1,0 +1,110 @@
+﻿@model BookAddViewModel
+<h1 class="display-6 mt-2">Yeni Kitap</h1>
+<hr />
+
+<form asp-area="Admin"
+      asp-controller="Books"
+      asp-action="Create"
+      method="post"
+      enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-9">
+            <div class="row">
+                <div class="col">
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="Name"></label>
+                        <input class="form-control" asp-for="Name">
+                        <span class="text-danger" asp-validation-for="Name"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="Stock"></label>
+                        <input class="form-control" asp-for="Stock">
+                        <span class="text-danger" asp-validation-for="Stock"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="Price"></label>
+                        <input class="form-control" asp-for="Price">
+                        <span class="text-danger" asp-validation-for="Price"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="PageCount"></label>
+                        <input class="form-control" asp-for="PageCount">
+                        <span class="text-danger" asp-validation-for="PageCount"></span>
+                    </div>
+
+                </div>
+                <div class="col">
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="EditionYear"></label>
+                        <input class="form-control" asp-for="EditionYear">
+                        <span class="text-danger" asp-validation-for="EditionYear"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="EditionNumber"></label>
+                        <input class="form-control" asp-for="EditionNumber">
+                        <span class="text-danger" asp-validation-for="EditionNumber"></span>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" asp-for="IsApproved">
+                        <label class="form-check-label" asp-for="IsApproved"></label>
+                    </div>
+                    <div class="mb-3">
+                        <input type="file" asp-for="Images" class="form-control" accept="image/" multiple />
+                        <span class="text-danger" asp-validation-for="Images"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="Summary"></label>
+                        <textarea class="form-control" asp-for="Summary" id="editor"></textarea>
+                        <span class="text-danger" asp-validation-for="Summary"></span>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Kaydet</button>
+        </div>
+        <div class="col-3">
+            <h5>Kategori Seç</h5>
+            @foreach (var category in Model.Categories)
+            {
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="SelectedCategories" value="@category.Id" @if(Model.SelectedCategories!=null){
+                       @(Model.SelectedCategories.Any(sc=>sc==category.Id) ? "checked" : "")
+                       }>
+                    <label class="form-check-label">@category.Name</label>
+                </div>
+            }
+            <span asp-validation-for="SelectedCategories" class="text-danger"></span>
+            <h5>Yazar Seç</h5>
+            @foreach (var author in Model.Authors)
+            {
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="SelectedAuthors" value="@author.Id" @if(Model.SelectedAuthors!=null){
+                       @(Model.SelectedAuthors.Any(sc=>sc==author.Id) ? "checked" : "")
+                       }>
+                    <label class="form-check-label">@author.Name</label>
+                </div>
+            }
+            <span asp-validation-for="SelectedAuthors" class="text-danger"></span>
+        </div>
+    </div>
+
+</form>
+@section Scripts{
+    @await Html.PartialAsync("_ValidationScriptsPartial");
+    <script>
+        CKEDITOR.replace('editor', {
+            toolbar: [
+                { name: 'colors', items: ['TextColor', 'BGColor'] },
+                { name: 'styles', items: ['Format', 'Font', 'FontSize'] },
+                { name: 'paraghraph', items: ['NumberedList', 'BulletedList'] }
+            ]
+        });
+    </script>
+}
+
+@section Styles{
+    <script src="//cdn.ckeditor.com/4.21.0/full/ckeditor.js"></script>
+}

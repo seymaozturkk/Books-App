@@ -1,0 +1,27 @@
+﻿@model List<CategoryViewModel>
+
+@if (Model.Count() > 0)
+{
+    <div class="list-group">
+            <a 
+                href="/"
+                class="list-group-item list-group-item-action @(ViewBag.SelectedCategory==null ? "active" : "")">
+                Tüm Kategoriler
+            </a>
+        @foreach (var category in Model)
+        {
+            <a 
+                asp-area=""
+                asp-controller="Home"
+                asp-action="Index"
+                asp-route-categoryurl="@category.Url"
+                class="list-group-item list-group-item-action @(ViewBag.SelectedCategory==category.Url ? "active" : "")">
+                @category.Name
+            </a>
+        }
+    </div>
+}
+else
+{
+    @await Html.PartialAsync("_NoRecord", "Kategori")
+}

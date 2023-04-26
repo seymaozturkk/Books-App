@@ -1,0 +1,134 @@
+﻿@model UserManageViewModel
+<form 
+    asp-area=""
+    asp-controller="Account"
+    asp-action="Manage"
+    method="post"
+>
+    <input type="hidden" name="Id" value="@Model.Id" />
+    <div class="row">
+        <div class="col-md-8">
+            <h1 class="display-6 fs-3 text-danger">Hesabım</h1>
+            <hr />
+            <div class="row">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="col-6 mb-3">
+                    <label class="form-label" asp-for="FirstName"></label>
+                    <input class="form-control" asp-for="FirstName" />
+                </div>
+                <div class="col-6 mb-3">
+                    <label class="form-label" asp-for="LastName"></label>
+                    <input class="form-control" asp-for="LastName" />
+                </div>
+                <div class="col-6 mb-3">
+                    <label class="form-label" asp-for="UserName"></label>
+                    <input class="form-control" asp-for="UserName" />
+                </div>
+                <div class="col-6 mb-3">
+                    <label class="form-label" asp-for="Email"></label>
+                    <input class="form-control" asp-for="Email" />
+                </div>
+                <div class="col-6 mb-3">
+                    <label class="form-label" asp-for="Address"></label>
+                    <input class="form-control" asp-for="Address" />
+                </div>
+                <div class="col-6 mb-3">
+                    <label class="form-label" asp-for="City"></label>
+                    <input class="form-control" asp-for="City" />
+                </div>
+                <div class="col-6 mb-3">
+                    <label class="form-label" asp-for="Gender"></label>
+                    <select asp-for="Gender" asp-items="@Model.GenderSelectList" class="form-select">
+                    </select>
+                </div>
+                <div class="col-6 mb-3">
+                    <label class="form-label" asp-for="DateOfBirth"></label>
+                    @{
+                        DateTime today = DateTime.Now;
+                        int year = today.Year;
+                        int yearPart = year - 18;
+                        int monthPart = today.Month;
+                        int dayPart = today.Day;
+                        DateTime minimumDateOfBirth = new DateTime(yearPart, monthPart, dayPart);
+                    }
+                    <input class="form-control"
+                           asp-for="DateOfBirth"
+                           value="@(Model.DateOfBirth==null ? minimumDateOfBirth.ToString("yyyy-MM-dd") : ((DateTime)Model.DateOfBirth).ToString("yyyy-MM-dd"))"
+                           min="1990-01-01"
+                           max="@minimumDateOfBirth.ToString("yyyy-MM-dd")" />
+
+                </div>
+
+                <button type="submit" class="btn btn-primary">Değişiklikleri Kaydet</button>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <h1 class="display-6 fs-3 text-success">Siparişlerim</h1>
+            <hr />
+            <div class="accordion accordion-flush" id="accordionOrders">
+                @if (Model.Orders.Count>0)
+                {
+                    @foreach (var orderView in Model.Orders)
+                    {
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordionOrder_@orderView.Id" aria-expanded="false" aria-controls="#accordionOrder_@orderView.Id">
+                                    <div class="row w-100">
+                                        <div class="col">
+                                            Sipariş Numarası: @orderView.Id
+                                        </div>
+                                        <div class="col">
+                                            Sipariş Tarihi: @orderView.OrderDate.ToShortDateString()
+                                        </div>
+                                        <div class="col">
+                                            @orderView.FirstName @orderView.LastName
+                                        </div>
+                                    </div>
+                                </button>
+                            </h2>
+                            <div id="accordionOrder_@orderView.Id" class="accordion-collapse collapse" data-bs-parent="#accordionOrders">
+                                <div class="accordion-body">
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>Kitap</th>
+                                                <th>Adet</th>
+                                                <th>Fiyat</th>
+                                                <th>Toplam</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+                                                decimal? total = 0;
+                                            }
+                                            @foreach (var orderItem in orderView.OrderItems)
+                                            {
+                                                <tr>
+                                                    <td>@orderItem.BookName</td>
+                                                    <td>@orderItem.Quantity</td>
+                                                    <td>@orderItem.ItemPrice</td>
+                                                    @{
+                                                        decimal? rowTotal = orderItem.Quantity * orderItem.ItemPrice;
+                                                        total += rowTotal;
+                                                    }
+                                                    <td>@($"{rowTotal:C2}")</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                    <span>Toplam: @($"{total:C2}")</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="alert alert-warning">
+                        Henüz hiç sipariş vermediniz!
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</form>

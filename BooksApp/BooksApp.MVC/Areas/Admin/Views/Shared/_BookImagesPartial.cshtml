@@ -1,0 +1,17 @@
+﻿@model BookUpdateViewModel
+<div class="row">
+    @foreach (var image in Model.ImageList)
+    {
+        <div class="col-4">
+            <form asp-area="admin"
+              asp-controller="Books"
+              asp-action="DeleteImage"
+              asp-route-id="@image.Id"
+              method="post">
+                <input type="hidden" name="bookId" value="@Model.Id">
+                <button type="submit" class="btn-close" aria-label="Close"></button>
+                <img src="~/images/books/@image.Url" class="img-thumbnail" alt="...">
+            </form>
+        </div>
+    }
+</div>

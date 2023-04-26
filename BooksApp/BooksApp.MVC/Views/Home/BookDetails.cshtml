@@ -1,0 +1,95 @@
+﻿@model BookModel
+<div class="container pt-4">
+    <div class="row">
+        <div class="col-3">
+            <div class="row">
+                @foreach (var image in Model.Images)
+                {
+                    <div class="col-12 pb-3">
+                        <img class="w-100" src="/images/books/@image.Url" />
+                    </div>
+                }
+
+            </div>
+        </div>
+        <div class="col-5 bg-light p-3">
+            <h3 class="display-6 fs-4 fw-normal text-danger">@Model.Name</h3>
+            @for (int i = 0; i < Model.Authors.Count; i++)
+            {
+                <span class="display-6 fs-6 fw-normal text-primary">@Model.Authors[i].Name @(i == Model.Authors.Count - 1 ? "" : " | ")</span>
+            }
+            <div class="mt-3">
+                @for (int i = 0; i < 5; i++)
+                {
+                    <i class="fa-regular fa-star text-success fa-xs"></i>
+                }
+            </div>
+            @*Kitap Ayrıntıları*@
+            <div class="mt-3">
+                <h3 class="display-6 fs-4 fw-normal text-danger mt-2">Kitap Ayrıntıları</h3>
+                <h6 class="d-inline">Kategori:</h6>
+                @for (int i = 0; i < Model.Categories.Count; i++)
+                {
+                    <span class="fs-6 text-warning">@Model.Categories[i].Name @(i == Model.Categories.Count - 1 ? "" : ",")</span>
+                }
+                <div class="row mt-3">
+                    <div class="col-6">
+                        <div>
+                            <h6 class="d-inline">Basım Yılı:</h6>
+                            <span class="fs-6">@Model.EditionYear</span>
+                        </div>
+                        <div>
+                            <h6 class="d-inline">Baskı Numarası:</h6>
+                            <span class="fs-6">@Model.EditionNumber</span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div>
+                            <h6 class="d-inline">Sayfa Sayısı:</h6>
+                            <span class="fs-6">@Model.PageCount</span>
+                        </div>
+                        <div>
+                            <h6 class="d-inline">Stok Miktarı:</h6>
+                            <span class="fs-6">@Model.Stock</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*Kitap Özeti*@
+            <h3 class="display-6 fs-4 fw-normal text-danger mt-3">Kitap Özeti</h3>
+            <p class="fs-6">@Html.Raw(Model.Summary)</p>
+        </div>
+        <div class="col-4">
+            @*Fiyat Bölümü*@
+            <div class="border-1 border-warning border p-3 pb-0">
+                <div class="row">
+                    <div class="col-6 d-flex justify-content-center align-items-center">
+                        <h5 class="fs-3 text-primary">@($"{Model.Price:C2}")</h5>
+                    </div>
+                    <div class="col-6 text-center">
+                        <p class="fs-6 text-center">Tedarik süresi 3-5 gündür.</p>
+                        <form asp-area=""
+                              asp-controller="Cart"
+                              asp-action="AddToCart"
+                              method="post">
+                            <input type="hidden" asp-for="Id" />
+                            <button type="submit" class="btn btn-warning">Sepete Ekle</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <p class="text-success mb-2 mt-2 fw-bold">300 TL üzeri kargo bedava!</p>
+                    </div>
+                </div>
+            </div>
+            @*Yazar Bilgileri*@
+            <div>
+                <h3 class="bg-warning p-2 fs-6 text-white fw-bold display-6 mt-3">@Model.Authors[0].Name</h3>
+                <img class="float-end me-1" src="https://picsum.photos/100/100" />
+                <p class="fs-6">@Html.Raw(Model.Authors[0].About)</p>
+
+            </div>
+        </div>
+    </div>
+</div>

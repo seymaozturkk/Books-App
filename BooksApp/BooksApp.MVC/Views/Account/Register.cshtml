@@ -1,0 +1,41 @@
+﻿@model RegisterViewModel
+<h1 class="display-6">Kayıt Ol</h1>
+<hr />
+<form asp-area="" asp-controller="Account" asp-action="Register" method="post">
+    <div class="row w-50">
+        <div class="col-6 mb-3">
+            <label class="form-label" asp-for="FirstName"></label>
+            <input class="form-control" asp-for="FirstName">
+            <span class="text-danger" asp-validation-for="FirstName"></span>
+        </div>
+        <div class="col-6 mb-3">
+            <label class="form-label" asp-for="LastName"></label>
+            <input class="form-control" asp-for="LastName">
+            <span class="text-danger" asp-validation-for="LastName"></span>
+        </div>
+        <div class="col-6 mb-3">
+            <label class="form-label" asp-for="UserName"></label>
+            <input class="form-control" asp-for="UserName">
+            <span class="text-danger" asp-validation-for="UserName"></span>
+        </div>
+        <div class="col-6 mb-3">
+            <label class="form-label" asp-for="Email"></label>
+            <input class="form-control" asp-for="Email">
+            <span class="text-danger" asp-validation-for="Email"></span>
+        </div>
+        <div class="col-6 mb-3">
+            <label class="form-label" asp-for="Password"></label>
+            <input class="form-control" asp-for="Password">
+            <span class="text-danger" asp-validation-for="Password"></span>
+        </div>
+        <div class="col-6 mb-3">
+            <label class="form-label" asp-for="RePassword"></label>
+            <input class="form-control" asp-for="RePassword">
+            <span class="text-danger" asp-validation-for="RePassword"></span>
+        </div>
+    </div>
+
+
+
+    <button type="submit" class="btn btn-primary">Kaydol</button>
+</form>

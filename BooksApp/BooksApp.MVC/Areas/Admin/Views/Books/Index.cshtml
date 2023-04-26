@@ -1,0 +1,87 @@
+﻿@model BookListViewModel
+@{
+    List<BookViewModel> books = Model.Books;
+}
+
+<div class="container-fluid mt-3">
+    <div class="d-flex justify-content-between align-items-center">
+        <h1 class="display-6">Kitap Listesi</h1>
+        <div class="d-flex flex-row align-items-end gap-5">
+            <div>
+                <form asp-area="Admin" asp-controller="Books" asp-action="Index"
+                      class="mb-3 form-check" id="form-show-all">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" asp-for="ApprovedStatus" onchange="document.getElementById('form-show-all').submit();">
+                        <label class="form-check-label" for="flexSwitchCheckChecked">@(Model.ApprovedStatus ? "Pasifleri Göster" : "Aktifleri Göster")</label>
+                    </div>
+                </form>
+            </div>
+            <div>
+                <a class="btn btn-success"
+                   asp-area="Admin"
+                   asp-controller="Books"
+                   asp-action="Create">Kitap Ekle</a>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <table id="myDataTable" class="table table-bordered table-sm">
+        <thead class="text-bg-success">
+            <tr>
+                <th width="80">Id</th>
+                <th>Kitap Adı</th>
+                <th>Onaylı?</th>
+                <th>Yazarları</th>
+                <th width="240">İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in books)
+            {
+                <tr>
+                    <td class="align-middle">@book.Id</td>
+                    <td class="align-middle">@book.Name</td>
+                    <td class="align-middle">
+                        <form asp-area="Admin"
+                          asp-controller="Books"
+                          asp-action="UpdateIsApproved"
+                          asp-route-id=@book.Id
+                          class="form-check" id="form-isapproved-@book.Id">
+                            <div class="form-check form-switch">
+                                <input type="hidden" asp-for="ApprovedStatus">
+                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" asp-for="@book.IsApproved" onchange="document.getElementById('form-isapproved-@book.Id').submit();">
+                            </div>
+                        </form>
+                    </td>
+                    <td>
+                        <a 
+                            asp-area="Admin"
+                            asp-controller="Authors"
+                            asp-action="GetAuthorsByBook"
+                            asp-route-id=@book.Id
+                            class="btn btn-link">(@book.Authors.Count)</a>
+                    </td>
+                    <td class="align-middle">
+                        <a class="btn btn-warning btn-sm"
+                       asp-area="Admin"
+                       asp-controller="Books"
+                       asp-action="Edit"
+                       asp-route-id=@book.Id>Düzenle</a>
+                        <a class="btn btn-outline-danger btn-sm"
+                       asp-area="Admin"
+                       asp-controller="Books"
+                       asp-action="Delete"
+                       asp-route-id=@book.Id>Sil</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Styles{
+    @await Html.PartialAsync("_DataTablesStylesPartialView")
+}
+@section Scripts{
+    @await Html.PartialAsync("_DataTablesScriptsPartialView")
+}

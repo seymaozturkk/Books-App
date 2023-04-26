@@ -1,0 +1,33 @@
+﻿@model List<BookModel>
+@{
+    List<BookModel> books = Model;
+}
+<div class="container products-container pb-5 mb-5">
+    <h2 class="text-center display-5">Kitaplar</h2>
+    <div class="row">
+        @foreach (var book in books)
+        {
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="product text-center ani">
+                    <img class="product-img" src="~/images/books/@book.Images[0].Url">
+                    <div class="product-icon">
+                        <a 
+                            asp-area=""
+                            asp-controller="Home"
+                            asp-action="BookDetails"
+                            asp-route-url=@book.Url
+                            class="btn">
+                            <i class="fa-solid fa-eye p-3"></i>
+                        </a>
+                        <a class="btn">
+                            <i class="fa-solid fa-cart-shopping p-3"></i>
+                        </a>
+                    </div>
+                    <h5><a href="" class="text-decoration-none">@book.Name</a></h5>
+                </div>
+            </div>
+        }
+
+
+    </div>
+</div>

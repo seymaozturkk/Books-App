@@ -1,0 +1,30 @@
+﻿@model CategoryUpdateViewModel
+<h1 class="display-6 mt-2">Kategori Güncellemesi</h1>
+<hr />
+
+<form asp-area="Admin"
+      asp-controller="Categories"
+      asp-action="Edit"
+      method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="mb-3">
+        <label class="form-label" asp-for="Name"></label>
+        <input type="text" class="form-control" asp-for="Name">
+        @*<span class="text-danger" asp-validation-for="Name"></span>*@
+    </div>
+    <div class="mb-3">
+        <label class="form-label" asp-for="Description"></label>
+        <input type="text" class="form-control" asp-for="Description">
+        @*<span class="text-danger" asp-validation-for="Description"></span>*@
+    </div>
+
+    <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" asp-for="IsApproved">
+        <label class="form-check-label" asp-for="IsApproved"></label>
+    </div>
+
+    <div class="form-text">Son güncelleme tarihi: @Model.ModifiedDate</div>
+    <div class="mt-3">
+        <button type="submit" class="btn btn-primary">Değişiklikleri Kaydet</button>
+    </div>
+</form>

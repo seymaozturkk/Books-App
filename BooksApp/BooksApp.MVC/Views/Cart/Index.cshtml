@@ -1,0 +1,139 @@
+﻿@model CartViewModel
+<h6 class="display-6">Alışveriş Sepetim</h6>
+<hr />
+@if (Model.CartItems.Count==0)
+{
+    <div class="alert alert-warning">
+        Sepetinizde ürün bulunmamaktadır!
+    </div>
+}
+else
+{
+    <div class="row">
+        <div class="col-8">
+            <h6 class="text-success display-6 fs-4 fw-normal">Ürünler</h6>
+            <hr>
+            <table class="table table-sm">
+                <thead>
+                    <tr class="text-danger">
+                        <th>Resim</th>
+                        <th>Ürün</th>
+                        <th>Fiyat</th>
+                        <th width="60">Adet</th>
+                        <th>Toplam</th>
+                        <th>KDV</th>
+                        <th>Sil</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var cartItem in Model.CartItems)
+                    {
+                        <tr>
+                            <td>
+                                <img src="~/images/books/@cartItem.ImageUrl" width="50"/>
+                            </td>
+                            <td>@cartItem.BookName</td>
+                            <td>@($"{cartItem.ItemPrice:C2}")</td>
+                            <td>
+                                <form
+                                    asp-area=""
+                                    asp-controller="Cart"
+                                    asp-action="ChangeQuantity"
+                                    id="formQuantity_@cartItem.CartItemId"
+                                    method="post"
+                                >
+                                    <input type="hidden" name="cartItemId" value="@cartItem.CartItemId" />
+                                    <input 
+                                        type="number"
+                                        class="form-control d-inline p-1"
+                                        name="Quantity"
+                                        value="@cartItem.Quantity"
+                                        min="1"
+                                        max="10"
+                                   onchange="document.getElementById('formQuantity_@cartItem.CartItemId').submit();" />
+                                    
+                                </form>
+    
+                            </td>
+                            <td>
+                                @{
+                                    decimal? total = cartItem.ItemPrice * cartItem.Quantity;
+                                }
+                                @($"{total:C2}")
+                            </td>
+                            <td>
+                                @{
+                                    decimal? kdv1 = total - total / 1.18m;
+                                }
+                                @($"{kdv1:C2}")
+                            </td>
+                            <td>
+                                <a 
+                                    asp-area=""
+                                    asp-controller="Cart"
+                                    asp-action="DeleteFromCart"
+                                    asp-route-id="@cartItem.CartItemId"
+                                    class="btn btn-close btn-sm"></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            
+            <a class="btn btn-danger btn-sm"
+                asp-area=""
+                asp-controller="Cart"
+                asp-action="ClearCart"
+                asp-route-id="@Model.CartId"
+            >Sepeti Temizle</a>
+            <span class="text-danger">@TempData["QuantityMessage"]</span>
+        </div>
+        <div class="col-4">
+            <h6 class="text-primary display-6 fs-4 fw-normal">Özet</h6>
+            <hr>
+            <table class="table table-sm">
+                <tbody>
+                    <tr>
+                        @{
+                            decimal? totalPrice = Model.TotalPrice();
+                            decimal? kdv = totalPrice - (totalPrice / (decimal?)(1.18));
+                            decimal? kargoBedeli = 19.90m;
+                            decimal? indirimOrani = 0.1m;
+                            decimal? indirimTutari = totalPrice * indirimOrani;
+                        }
+                        <th>Toplam Tutar:</th>
+                        <td class="text-end">@($"{totalPrice:C2}")</td>
+                    </tr>
+                    <tr>
+                        <th>KDV Tutarı:</th>
+                        <td class="text-end">@($"{kdv:C2}")</td>
+                    </tr>
+                    <tr>
+                        <th>Kargo:</th>
+                        <td class="text-end">@($"{kargoBedeli:C2}")</td>
+                    </tr>
+                    <tr>
+                        <th>İndirim:</th>
+                        <td class="text-end">@($"{indirimTutari:C2}")</td>
+                    </tr>
+                    <tr>
+                        <th>ÖDENECEK TOPLAM TUTAR</th>
+                        <td class="text-end fw-bold text-danger">
+                            @($"{(totalPrice + kargoBedeli - indirimTutari):C2}")
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div colspan="2" class="d-flex justify-content-between w-100">
+                <a href="/" class="btn btn-success">Alışverişe Dön</a>
+                <a 
+                    asp-area=""
+                    asp-controller="Cart"
+                    asp-action="Checkout"
+                    class="btn btn-primary">Ödemeye Geç</a>
+            </div>
+        </div>
+    </div>
+}
+
+

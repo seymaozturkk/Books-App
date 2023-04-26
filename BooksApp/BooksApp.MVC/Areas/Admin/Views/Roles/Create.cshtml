@@ -1,0 +1,62 @@
+﻿@model RoleAddViewModel
+<h1 class="display-6 mt-2">Rol Ekle</h1>
+<hr />
+
+<form asp-area="Admin"
+      asp-controller="Roles"
+      asp-action="Create"
+      method="post">
+    <div class="row">
+        <div class="col-9">
+            <div class="row">
+                <div class="col">
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="Name"></label>
+                        <input class="form-control" asp-for="Name">
+                        <span class="text-danger" asp-validation-for="Name"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="Description"></label>
+                        <input class="form-control" asp-for="Description">
+                        <span class="text-danger" asp-validation-for="Description"></span>
+                    </div>
+                    
+                </div>
+                <div class="col">
+                    @*Burası gerekirse diye silmiyoruz*@
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Kaydet</button>
+        </div>
+        <div class="col-3">
+            @*<h5>Kategori Seç</h5>
+            @foreach (var category in Model.Categories)
+            {
+            <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="SelectedCategories" value="@category.Id" @if(Model.SelectedCategories!=null){
+            @(Model.SelectedCategories.Any(sc=>sc==category.Id) ? "checked" : "")
+            }>
+            <label class="form-check-label">@category.Name</label>
+            </div>
+            }
+            <span asp-validation-for="SelectedCategories" class="text-danger"></span>
+            <h5>Yazar Seç</h5>
+            @foreach (var author in Model.Authors)
+            {
+            <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="SelectedAuthors" value="@author.Id" @if(Model.SelectedAuthors!=null){
+            @(Model.SelectedAuthors.Any(sc=>sc==author.Id) ? "checked" : "")
+            }>
+            <label class="form-check-label">@author.Name</label>
+            </div>
+            }
+            <span asp-validation-for="SelectedAuthors" class="text-danger"></span>*@
+        </div>
+    </div>
+
+</form>
+
+@section Scripts{
+    @await Html.PartialAsync("_ValidationScriptsPartial");
+}
+

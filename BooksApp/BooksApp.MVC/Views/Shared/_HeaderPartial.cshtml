@@ -1,0 +1,24 @@
+﻿<header>
+    <section class="nav-bar bg-body-tertiary  w-100">
+        <div class="container-fluid ">
+            <div class=" navbar row">
+                <div class="col-4 col-lg-2 col-xl-4 ">
+                    <a href="/" class="navbar-brand">BooksApp</a>
+                </div>
+                <div class=" order-lg-last col-8 col-lg-5 col-xl-4">
+                    @await Html.PartialAsync("_TopMenuPartial")
+                </div>
+                <div class="col-12 col-lg-5 col-xl-4">
+                    <form action="">
+                        <div class="input-group search-form">
+                            <input type="text" class="form-control text-center " placeholder="Ürün adını giriniz.">
+                            <button class="btn " style="color: white; background-color: var(--main-color);">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</header>
